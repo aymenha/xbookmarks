@@ -1,6 +1,6 @@
 import React from "react";
 import { host } from "storybook-host";
-import WelcomeButton from "./WelcomeButton";
+import { BookmarkCard } from "./BookmarkCard";
 
 const Host = host({
   align: "center middle",
@@ -8,10 +8,9 @@ const Host = host({
   backdrop: true,
 });
 
-export const Default = () => <WelcomeButton>hello</WelcomeButton>;
-export const Hi = () => <div>Hi</div>;
+export const Default = () => <BookmarkCard title="hello" icon="" href="" />;
 
 export default {
-  title: "Welcome Button",
+  title: "Bookmark Card",
   decorators: [Host],
 };
