@@ -1,7 +1,7 @@
 import { Box, Card, makeStyles } from "@material-ui/core";
 import React, { useCallback, useMemo } from "react";
 
-interface Bookmark {
+export interface Bookmark {
   title: string;
   icon: string;
   href: string;

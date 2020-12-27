@@ -1,5 +1,4 @@
 import { Box, Container, makeStyles } from "@material-ui/core";
-import axios from "axios";
 import clsx from "clsx";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { BookmarkCard } from "../components/BookmarkCard/BookmarkCard";
@@ -8,14 +7,8 @@ import {
   ViewModeEnum,
   ViewModeToggler,
 } from "../containers/ViewModeToggler/ViewModeToggler";
+import { BookmarkDto, bookmarksService } from "../services/bookmarks.service";
 import theme from "../theme";
-
-interface Bookmark {
-  title: string;
-  href: string;
-  icon: string;
-  created_at: string;
-}
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -43,17 +36,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-async function fetchBookmarks(): Promise<Bookmark[]> {
-  const res = await axios("/data/data.json");
-  return res.data;
-}
+const openBookmarkInNewTab = (bookmark: any) => {
+  window.open(bookmark.href, "_blank");
+};
 
 const Home = () => {
   const classes = useStyles();
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [bookmarks, setBookmarks] = useState<BookmarkDto[]>([]);
+  const [visibleBookmarks, setVisibleBookmarks] = useState<BookmarkDto[]>([]);
   const [query, setQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewModeEnum>(ViewModeEnum.Chips);
-  const [visibleBookmarks, setVisibleBookmarks] = useState<Bookmark[]>([]);
 
   const listContainerClasses = clsx({
     [classes.listContainer]: true,
@@ -62,7 +54,7 @@ const Home = () => {
   });
 
   useEffect(() => {
-    fetchBookmarks().then(setBookmarks);
+    bookmarksService.getBookmarks().then(setBookmarks);
   }, []);
 
   useEffect(() => {
@@ -76,10 +68,6 @@ const Home = () => {
     },
     [bookmarks]
   );
-
-  const openBookmarkInNewTab = useCallback((bookmark: any) => {
-    window.open(bookmark.href, "_blank");
-  }, []);
 
   const bookmarkElms = useMemo(() => {
     const elms = visibleBookmarks
