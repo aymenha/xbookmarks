@@ -8,7 +8,13 @@ const Host = host({
   backdrop: true,
 });
 
-export const Default = () => <BookmarkCard title="hello" icon="" href="" />;
+const testData = {
+  title: "hello",
+  icon: "",
+  href: "",
+};
+
+export const Default = () => <BookmarkCard bookmark={testData} />;
 
 export default {
   title: "Bookmark Card",

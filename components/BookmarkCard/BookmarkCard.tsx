@@ -1,19 +1,24 @@
 import { Box, Card, makeStyles } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 
-interface BookmarkCardProps {
+interface Bookmark {
   title: string;
   icon: string;
   href: string;
+}
+
+interface BookmarkCardProps {
+  bookmark: Bookmark;
   highlight?: string;
+  onClick?: (bookmark: Bookmark) => void;
 }
 
 export function BookmarkCard({
-  title,
-  href,
-  icon,
+  bookmark,
   highlight,
+  onClick,
 }: BookmarkCardProps) {
+  const { title, href, icon } = bookmark;
   const classes = useStyles();
   const origin = useMemo(() => {
     try {
@@ -33,8 +38,12 @@ export function BookmarkCard({
     });
   }, [highlight, title]);
 
+  const onClickHandler = useCallback(() => {
+    onClick && onClick(bookmark);
+  }, [onClick, bookmark]);
+
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={onClickHandler}>
       <Box className={classes.titleContainer}>
         <img src={icon} alt="" className={classes.icon} />
         <span className={classes.title}>{titleElm}</span>

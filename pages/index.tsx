@@ -77,10 +77,21 @@ const Home = () => {
     [bookmarks]
   );
 
+  const openBookmarkInNewTab = useCallback((bookmark: any) => {
+    window.open(bookmark.href, "_blank");
+  }, []);
+
   const bookmarkElms = useMemo(() => {
     const elms = visibleBookmarks
       .slice(0, 20)
-      .map((b, index) => <BookmarkCard {...b} highlight={query} key={index} />);
+      .map((b, index) => (
+        <BookmarkCard
+          bookmark={b}
+          highlight={query}
+          onClick={openBookmarkInNewTab}
+          key={index}
+        />
+      ));
     return elms;
   }, [visibleBookmarks, query]);
 
