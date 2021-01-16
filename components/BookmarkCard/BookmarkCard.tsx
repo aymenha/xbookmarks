@@ -1,4 +1,5 @@
 import { Box, Card, makeStyles } from "@material-ui/core";
+import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 
 export interface Bookmark {
@@ -43,10 +44,13 @@ export function BookmarkCard({
   }, [onClick, bookmark]);
 
   return (
-    <Card className={classes.root} onClick={onClickHandler}>
+    <Card
+      className={clsx("BookmarkCard-root", classes.root)}
+      onClick={onClickHandler}
+    >
       <Box className={classes.titleContainer}>
         <img src={icon} alt="" className={classes.icon} />
-        <span>{titleElm}</span>
+        <span className="BookmarkCard-title">{titleElm}</span>
       </Box>
       {/* <span className={classes.href}>{origin}</span> */}
     </Card>
