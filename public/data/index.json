@@ -1,0 +1,16 @@
+{
+  "categories": [
+    {
+      "title": "Development",
+      "filename": "development.json"
+    },
+    {
+      "title": "Tools",
+      "filename": "tools.json"
+    },
+    {
+      "title": "Youtube",
+      "filename": "youtube.json"
+    }
+  ]
+}
