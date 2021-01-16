@@ -116,10 +116,18 @@ const useStyles = makeStyles(() => ({
     alignItems: "stretch",
   },
   viewModeCards: {
-    columns: "4",
     "& .BookmarkCard-root": {
       width: "100%",
       display: "inline-block",
+    },
+    [theme.breakpoints.up("sm")]: {
+      columns: "2",
+    },
+    [theme.breakpoints.up("md")]: {
+      columns: "3",
+    },
+    [theme.breakpoints.up("lg")]: {
+      columns: "5",
     },
   },
   viewModeChips: {

@@ -48,9 +48,11 @@ export function BookmarkCard({
       className={clsx("BookmarkCard-root", classes.root)}
       onClick={onClickHandler}
     >
-      <Box className={classes.titleContainer}>
+      <Box className={classes.container}>
         <img src={icon} alt="" className={classes.icon} />
-        <span className="BookmarkCard-title">{titleElm}</span>
+        <span className={clsx("BookmarkCard-title", classes.title)}>
+          {titleElm}
+        </span>
       </Box>
       {/* <span className={classes.href}>{origin}</span> */}
     </Card>
@@ -68,9 +70,12 @@ const useStyles = makeStyles((theme) => ({
       border: "1px solid #b5b6b6",
     },
   },
-  titleContainer: {
+  container: {
     display: "flex",
     alignItems: "center",
+  },
+  title: {
+    wordBreak: "break-word",
   },
   href: {
     marginLeft: theme.spacing(3),

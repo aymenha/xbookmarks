@@ -7,4 +7,11 @@ export default createMuiTheme({
       main: indigo["A200"],
     },
   },
+  overrides: {
+    MuiPaper: {
+      elevation1: {
+        boxShadow: "0px 8px 20px rgba(0,0,0,0.06)",
+      },
+    },
+  },
 });
