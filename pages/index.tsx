@@ -18,21 +18,36 @@ const useStyles = makeStyles(() => ({
     padding: theme.spacing(3),
   },
   listContainer: {
-    "&>*": {
+    "&>.BookmarkCard-root": {
       margin: theme.spacing(0.5),
     },
   },
-  viewModeCards: {
+  viewModeList: {
     display: "flex",
     flexWrap: "nowrap",
     flexDirection: "column",
     alignItems: "stretch",
+  },
+  viewModeCards: {
+    columns: "4",
+    "& .BookmarkCard-root": {
+      width: "100%",
+      display: "inline-block",
+    },
   },
   viewModeChips: {
     display: "flex",
     alignItems: "baseline",
     flexDirection: "row",
     flexWrap: "wrap",
+    "& .BookmarkCard-root": {
+      maxWidth: "30em",
+      whiteSpace: "nowrap",
+    },
+    "& .BookmarkCard-title": {
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+    },
   },
 }));
 
@@ -45,12 +60,13 @@ const Home = () => {
   const [bookmarks, setBookmarks] = useState<BookmarkDto[]>([]);
   const [visibleBookmarks, setVisibleBookmarks] = useState<BookmarkDto[]>([]);
   const [query, setQuery] = useState("");
-  const [viewMode, setViewMode] = useState<ViewModeEnum>(ViewModeEnum.Chips);
+  const [viewMode, setViewMode] = useState<ViewModeEnum>(ViewModeEnum.Cards);
 
   const listContainerClasses = clsx({
     [classes.listContainer]: true,
     [classes.viewModeCards]: viewMode === ViewModeEnum.Cards,
     [classes.viewModeChips]: viewMode === ViewModeEnum.Chips,
+    [classes.viewModeList]: viewMode === ViewModeEnum.List,
   });
 
   useEffect(() => {
@@ -71,7 +87,7 @@ const Home = () => {
 
   const bookmarkElms = useMemo(() => {
     const elms = visibleBookmarks
-      .slice(0, 20)
+      .slice(0, 50)
       .map((b, index) => (
         <BookmarkCard
           bookmark={b}

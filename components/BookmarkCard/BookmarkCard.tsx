@@ -46,7 +46,7 @@ export function BookmarkCard({
     <Card className={classes.root} onClick={onClickHandler}>
       <Box className={classes.titleContainer}>
         <img src={icon} alt="" className={classes.icon} />
-        <span className={classes.title}>{titleElm}</span>
+        <span>{titleElm}</span>
       </Box>
       {/* <span className={classes.href}>{origin}</span> */}
     </Card>
@@ -68,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  title: {},
   href: {
     marginLeft: theme.spacing(3),
     color: theme.palette.text.secondary,

@@ -1,11 +1,13 @@
 import { makeStyles } from "@material-ui/core";
 import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
 import ViewColumnIcon from "@material-ui/icons/ViewColumn";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
 export enum ViewModeEnum {
+  List = "list",
   Cards = "cards",
   Chips = "chips",
 }
@@ -33,10 +35,13 @@ export function ViewModeToggler({ viewMode, onChange }: ViewModeTogglerProps) {
       }}
     >
       <ToggleButton value={ViewModeEnum.Cards}>
-        <ViewAgendaIcon />
+        <DashboardIcon />
       </ToggleButton>
       <ToggleButton value={ViewModeEnum.Chips}>
         <ViewColumnIcon />
+      </ToggleButton>
+      <ToggleButton value={ViewModeEnum.List}>
+        <ViewAgendaIcon />
       </ToggleButton>
     </ToggleButtonGroup>
   );
