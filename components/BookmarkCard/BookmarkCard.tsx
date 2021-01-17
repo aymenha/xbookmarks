@@ -9,7 +9,7 @@ export interface Bookmark {
   createdAt: number;
 }
 
-interface BookmarkCardProps {
+export interface BookmarkCardProps {
   bookmark: Bookmark;
   highlight?: string;
   onClick?: (bookmark: Bookmark) => void;
