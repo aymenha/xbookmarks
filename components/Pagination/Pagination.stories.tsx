@@ -9,7 +9,7 @@ const Host = host({
 });
 
 const testData: PaginationProps = {
-  totalItems: 570,
+  count: 570,
   currentPage: 1,
   perPage: 50,
 };

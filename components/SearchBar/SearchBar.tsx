@@ -1,6 +1,5 @@
 import {
   Box,
-  Card,
   CardContent,
   Collapse,
   Divider,
@@ -9,14 +8,15 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import React, { useMemo, useState } from "react";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import CancelRoundedIcon from "@material-ui/icons/CloseRounded";
+// import MenuIcon from "@material-ui/icons/Menu";
+// import SearchIcon from "@material-ui/icons/Search";
+// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SettingsIcon from "@material-ui/icons/Settings";
+import React, { useCallback, useState } from "react";
 
-interface SearchBarProps {
+export interface SearchBarProps {
   query?: string;
   onChange?: (query: string) => void;
   rightContent?: React.ReactNode;
@@ -30,9 +30,21 @@ export function SearchBar({
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
-  const onSearchHandler = (e) => {
-    onChange && onChange(e.target.value);
-  };
+  const onSearchHandler = useCallback(
+    (e) => onChange && onChange(e.target.value),
+    [onChange]
+  );
+
+  const clearQuery = useCallback(() => onChange && onChange(""), [
+    onSearchHandler,
+  ]);
+
+  const escapeKeyHandler = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Escape") clearQuery();
+    },
+    [clearQuery]
+  );
 
   return (
     <Paper>
@@ -44,11 +56,18 @@ export function SearchBar({
           className={classes.input}
           placeholder="Search.."
           onChange={onSearchHandler}
+          onKeyDown={escapeKeyHandler}
           value={query}
         />
         {/* <IconButton className={classes.iconButton}>
           <SearchIcon />
         </IconButton> */}
+        {query && (
+          <IconButton size="small" onClick={clearQuery}>
+            <CancelRoundedIcon />
+          </IconButton>
+        )}
+
         <Divider className={classes.divider} orientation="vertical" />
         {/* <IconButton
           color="primary"
