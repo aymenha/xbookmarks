@@ -6,6 +6,7 @@ export interface Bookmark {
   title: string;
   icon: string;
   href: string;
+  createdAt: number;
 }
 
 interface BookmarkCardProps {

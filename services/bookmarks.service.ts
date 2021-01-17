@@ -4,7 +4,7 @@ export interface BookmarkDto {
   title: string;
   href: string;
   icon: string;
-  created_at: string;
+  createdAt: number;
 }
 
 interface Entrypoint {
@@ -27,11 +27,15 @@ async function getBookmarks(): Promise<BookmarkDto[]> {
   );
 
   const bookmarks = await Promise.allSettled(categoriesPromises);
-  return bookmarks.reduce((value, bookmarPromiseSettle) => {
+  const flatBookmarks = bookmarks.reduce((value, bookmarPromiseSettle) => {
     if (bookmarPromiseSettle.status === "fulfilled")
       return [...value, ...bookmarPromiseSettle.value.data];
     else return value;
   }, [] as BookmarkDto[]);
+
+  return flatBookmarks.sort(
+    (bookmarkA, bookmarkB) => bookmarkB.createdAt - bookmarkA.createdAt
+  );
 }
 
 export const bookmarksService: BookmarksService = {
