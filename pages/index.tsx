@@ -18,7 +18,7 @@ const openBookmarkInNewTab = (bookmark: any) => {
 };
 
 const filterByQuery = (query: string) => (bookmark: BookmarkDto) => {
-  return bookmark.title.includes(query);
+  return bookmark.title.toLowerCase().includes(query.toLowerCase());
 };
 
 const Home = () => {
