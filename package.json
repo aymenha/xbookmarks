@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "export": "next export && touch ./out/_next/.nojekyll && touch ./out/.nojekyll",
     "start": "next start",
     "storybook": "start-storybook -p 6006 --ci",
     "build-storybook": "build-storybook",

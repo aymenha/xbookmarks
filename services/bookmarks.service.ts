@@ -19,11 +19,10 @@ interface BookmarksService {
 }
 
 async function getBookmarks(): Promise<BookmarkDto[]> {
-  const entrypoint = await httpService.get<Entrypoint>("/data/index.json");
-
+  const entrypoint = await httpService.get<Entrypoint>("data/index.json");
   const categories = entrypoint.data.categories;
   const categoriesPromises = categories.map((cat) =>
-    httpService.get<BookmarkDto[]>(`/data/${cat.filename}`)
+    httpService.get<BookmarkDto[]>(`data/${cat.filename}`)
   );
 
   const bookmarks = await Promise.allSettled(categoriesPromises);
