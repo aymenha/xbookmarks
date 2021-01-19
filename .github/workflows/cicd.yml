@@ -37,16 +37,19 @@ jobs:
         if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile --production
 
-      - name: "Cached deps size"
+      - name: Cached deps size
         run: du -hs node_modules
 
       - name: Build
         run: yarn build
         env:
-          NEXT_PUBLIC_BASE_PATH: /bookmarks
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
 
+      # the .nojekyll file is required for folders that start with an underscore (otherwise they wont be served by gh)
       - name: Export
-        run: yarn export
+        run: |
+          yarn export
+          touch ./out/_next/.nojekyll
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
