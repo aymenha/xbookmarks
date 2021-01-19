@@ -1,5 +1,6 @@
 import { Box, Container, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import Head from "next/head";
 import React, { useEffect, useMemo, useState } from "react";
 import { BookmarkCard } from "../components/BookmarkCard/BookmarkCard";
 import { Pagination } from "../components/Pagination/Pagination";
@@ -72,25 +73,30 @@ const Home = () => {
   }, [bookmarks, query, currentPage]);
 
   return (
-    <Box className={classes.root}>
-      <Container>
-        <Box display="flex">
-          <Box flex="1">
-            <SearchBar onChange={setQuery} query={query} />
+    <>
+      <Head>
+        <title>xBookmarks</title>
+      </Head>
+      <Box className={classes.root}>
+        <Container>
+          <Box display="flex">
+            <Box flex="1">
+              <SearchBar onChange={setQuery} query={query} />
+            </Box>
+            <ViewModeToggler viewMode={viewMode} onChange={setViewMode} />
           </Box>
-          <ViewModeToggler viewMode={viewMode} onChange={setViewMode} />
-        </Box>
-        <Box my={2} display="flex" justifyContent="flex-end">
-          <Pagination
-            currentPage={currentPage}
-            perPage={PER_PAGE}
-            count={visibleCount}
-            onChange={setCurrentPage}
-          />
-        </Box>
-        <Box className={listContainerClasses}>{bookmarkElms}</Box>
-      </Container>
-    </Box>
+          <Box my={2} display="flex" justifyContent="flex-end">
+            <Pagination
+              currentPage={currentPage}
+              perPage={PER_PAGE}
+              count={visibleCount}
+              onChange={setCurrentPage}
+            />
+          </Box>
+          <Box className={listContainerClasses}>{bookmarkElms}</Box>
+        </Container>
+      </Box>
+    </>
   );
 };
 
