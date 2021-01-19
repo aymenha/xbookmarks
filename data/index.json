@@ -1,0 +1,16 @@
+{
+  "categories": [
+    {
+      "title": "Github",
+      "filename": "github.json"
+    },
+    {
+      "title": "Youtube",
+      "filename": "youtube.json"
+    },
+    {
+      "title": "Resources",
+      "filename": "resources.json"
+    }
+  ]
+}
