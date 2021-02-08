@@ -62,6 +62,8 @@ export function BookmarkCard({
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    // background: theme.palette.grey["500"],
+    // color: theme.palette.common.white,
     display: "flex",
     flexDirection: "column",
     border: "1px solid transparent",

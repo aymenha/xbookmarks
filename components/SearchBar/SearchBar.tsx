@@ -10,10 +10,6 @@ import {
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CancelRoundedIcon from "@material-ui/icons/CloseRounded";
-// import MenuIcon from "@material-ui/icons/Menu";
-// import SearchIcon from "@material-ui/icons/Search";
-// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SettingsIcon from "@material-ui/icons/Settings";
 import React, { useCallback, useState } from "react";
 
 export interface SearchBarProps {
@@ -68,7 +64,6 @@ export function SearchBar({
           </IconButton>
         )}
 
-        <Divider className={classes.divider} orientation="vertical" />
         {/* <IconButton
           color="primary"
           className={classes.iconButton}
@@ -76,9 +71,6 @@ export function SearchBar({
         >
           <ExpandMoreIcon />
         </IconButton> */}
-        <IconButton className={classes.iconButton}>
-          <SettingsIcon />
-        </IconButton>
         {rightContent}
       </Box>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -100,12 +92,5 @@ const useStyles = makeStyles((theme) => ({
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
   },
 }));

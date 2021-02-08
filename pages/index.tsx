@@ -1,10 +1,22 @@
-import { Box, Container, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  createMuiTheme,
+  Divider,
+  IconButton,
+  makeStyles,
+  Theme,
+  ThemeProvider,
+  useTheme,
+} from "@material-ui/core";
+import SettingsIcon from "@material-ui/icons/Settings";
 import clsx from "clsx";
 import Head from "next/head";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { BookmarkCard } from "../components/BookmarkCard/BookmarkCard";
 import { Pagination } from "../components/Pagination/Pagination";
 import { SearchBar } from "../components/SearchBar/SearchBar";
+import { SettingsDialogBox } from "../containers/SettingsDialogBox/SettingsDialogBox";
 import {
   ViewModeEnum,
   ViewModeToggler,
@@ -13,6 +25,8 @@ import { BookmarkDto, bookmarksService } from "../services/bookmarks.service";
 import theme from "../theme";
 
 const PER_PAGE = 50;
+
+type PaletteMode = "light" | "dark";
 
 const openBookmarkInNewTab = (bookmark: any) => {
   window.open(bookmark.href, "_blank");
@@ -23,13 +37,15 @@ const filterByQuery = (query: string) => (bookmark: BookmarkDto) => {
 };
 
 const Home = () => {
-  const classes = useStyles();
   const [bookmarks, setBookmarks] = useState<BookmarkDto[]>([]);
   const [visibleCount, setVisibleCount] = useState<number>(0);
   const [query, setQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewModeEnum>(ViewModeEnum.Cards);
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [settingsVisible, setSettingsVisible] = useState(false);
+  const [paletteMode, setPaletteMode] = useState<PaletteMode>("light");
 
+  const classes = useStyles({ paletteMode });
   const listContainerClasses = clsx({
     [classes.listContainer]: true,
     [classes.viewModeCards]: viewMode === ViewModeEnum.Cards,
@@ -50,6 +66,14 @@ const Home = () => {
   useEffect(() => {
     setCurrentPage(0);
   }, [query]);
+
+  const theme = useTheme();
+  const userTheme = createMuiTheme({
+    ...theme,
+    palette: {
+      type: paletteMode,
+    },
+  });
 
   const bookmarkElms = useMemo(() => {
     const offsetStart = currentPage * PER_PAGE;
@@ -72,41 +96,78 @@ const Home = () => {
       ));
   }, [bookmarks, query, currentPage]);
 
+  const toggleSettingsDialogBox = useCallback(
+    () => setSettingsVisible((value) => !value),
+    []
+  );
+
+  const settingsCog = useMemo(() => {
+    return (
+      <>
+        <Divider className={classes.divider} orientation="vertical" />
+        <IconButton
+          className={classes.iconButton}
+          onClick={toggleSettingsDialogBox}
+        >
+          <SettingsIcon />
+        </IconButton>
+        <SettingsDialogBox
+          open={settingsVisible}
+          onBackdropClick={toggleSettingsDialogBox}
+          onCancelClick={toggleSettingsDialogBox}
+          settings={{ darkMode: paletteMode === "dark" }}
+          onChange={(settings) =>
+            setPaletteMode(settings.darkMode ? "dark" : "light")
+          }
+        />
+      </>
+    );
+  }, [settingsVisible, toggleSettingsDialogBox, paletteMode]);
+
   return (
     <>
       <Head>
         <title>xBookmarks</title>
       </Head>
-      <Box className={classes.root}>
-        <Container>
-          <Box display="flex">
-            <Box flex="1">
-              <SearchBar onChange={setQuery} query={query} />
+      <ThemeProvider theme={userTheme}>
+        <Box className={classes.root}>
+          <Container>
+            <Box display="flex">
+              <Box flex="1">
+                <SearchBar
+                  onChange={setQuery}
+                  query={query}
+                  rightContent={settingsCog}
+                />
+              </Box>
+              <ViewModeToggler viewMode={viewMode} onChange={setViewMode} />
             </Box>
-            <ViewModeToggler viewMode={viewMode} onChange={setViewMode} />
-          </Box>
-          <Box my={2} display="flex" justifyContent="flex-end">
-            <Pagination
-              currentPage={currentPage}
-              perPage={PER_PAGE}
-              count={visibleCount}
-              onChange={setCurrentPage}
-            />
-          </Box>
-          <Box className={listContainerClasses}>{bookmarkElms}</Box>
-        </Container>
-      </Box>
+            <Box my={2} display="flex" justifyContent="flex-end">
+              <Pagination
+                currentPage={currentPage}
+                perPage={PER_PAGE}
+                count={visibleCount}
+                onChange={setCurrentPage}
+              />
+            </Box>
+            <Box className={listContainerClasses}>{bookmarkElms}</Box>
+          </Container>
+        </Box>
+      </ThemeProvider>
     </>
   );
 };
 
 export default Home;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles<Theme, { paletteMode: PaletteMode }>((theme) => ({
   root: {
     overflowY: "scroll",
     height: "100vh",
-    background: theme.palette.grey[300],
+    background: (props) =>
+      props.paletteMode === "dark"
+        ? theme.palette.grey["600"]
+        : theme.palette.grey[300],
     padding: theme.spacing(3),
   },
   listContainer: {
@@ -149,5 +210,12 @@ const useStyles = makeStyles(() => ({
       textOverflow: "ellipsis",
       overflow: "hidden",
     },
+  },
+  iconButton: {
+    padding: 10,
+  },
+  divider: {
+    height: 28,
+    margin: 4,
   },
 }));
